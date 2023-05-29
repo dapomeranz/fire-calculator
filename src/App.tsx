@@ -4,7 +4,6 @@ import Home from "./pages/Home";
 import Calculator from "./pages/Calculator";
 import Todo from "./pages/Todo";
 import About from "./pages/About";
-import "./App.css";
 
 function App() {
   return (

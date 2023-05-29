@@ -1,6 +1,16 @@
-import { LineChart } from "recharts";
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  Line,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { useState } from "react";
 import { CALCULATOR_STARTING_POINT } from "../constants";
+import "./Calculator.css";
 
 function Calculator() {
   let [calculatorInputs, setCalculatorInputs] = useState(
@@ -26,7 +36,7 @@ function Calculator() {
       totalSavings *= 1 + investmentGrowthRate;
       activeIncome *= 1 + incomeGrowthRate;
       totalSavings += activeIncome * savingsRate;
-      savingsOverTime.push({ x: age, y: totalSavings });
+      savingsOverTime.push({ x: age, y: Math.round(totalSavings) });
     }
 
     return savingsOverTime;
@@ -39,11 +49,14 @@ function Calculator() {
       [event.target.name]: value,
     });
     console.log(calculatorInputs);
+  };
+
+  const mouseRelease = () => {
     setLineChartValues(getSavingsOverTime());
   };
 
   return (
-    <div>
+    <div className="p-3">
       <h1>Calculator</h1>
       <label htmlFor="age" className="form-label">
         Current Age
@@ -51,14 +64,15 @@ function Calculator() {
       <input
         type="range"
         className="form-range"
+        name="currentAge"
         min="0"
         max="100"
         step="0.25"
         id="currentAge"
-        defaultValue={calculatorInputs.currentAge}
+        value={calculatorInputs.currentAge}
         onChange={handleChange}
       ></input>
-      <h2>{calculatorInputs.currentAge}</h2>
+      {calculatorInputs.currentAge}
       <br />
       <label htmlFor="income" className="form-label">
         Current Income (Annual)
@@ -66,14 +80,15 @@ function Calculator() {
       <input
         type="range"
         className="form-range"
+        name="currentIncome"
         min="0"
         max="500000"
         step="1000"
         id="currentIncome"
-        defaultValue={calculatorInputs.currentIncome}
+        value={calculatorInputs.currentIncome}
         onChange={handleChange}
       ></input>
-      <h2>{calculatorInputs.currentIncome}</h2>
+      {calculatorInputs.currentIncome}
       <br />
       <label htmlFor="savings" className="form-label">
         Current Savings
@@ -81,14 +96,32 @@ function Calculator() {
       <input
         type="range"
         className="form-range"
+        name="currentSavings"
         min="0"
-        max="5000000"
+        max="500000"
         step="1000"
         id="savings"
-        defaultValue={calculatorInputs.currentSavings}
+        value={calculatorInputs.currentSavings}
         onChange={handleChange}
       ></input>
-      <h2>{calculatorInputs.currentSavings}</h2>
+      {calculatorInputs.currentSavings}
+      <ResponsiveContainer width="100%" aspect={3}>
+        <AreaChart data={lineChartValues} margin={{ right: 300 }}>
+          <CartesianGrid />
+          <XAxis dataKey="x" domain={[20, 90]} type="number" label="age" />
+          <YAxis
+            tickFormatter={(value) => `$${value.toLocaleString()}`}
+            width={200}
+          ></YAxis>
+          <Tooltip
+            formatter={(value) => [
+              `$${value.toLocaleString()}`,
+              "Total Savings",
+            ]}
+          />
+          <Area dataKey="y" stroke="green" activeDot={{ r: 8 }} />
+        </AreaChart>
+      </ResponsiveContainer>
     </div>
   );
 }
