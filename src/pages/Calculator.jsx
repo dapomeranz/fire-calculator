@@ -2,7 +2,6 @@ import {
   Area,
   AreaChart,
   CartesianGrid,
-  Line,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -42,17 +41,13 @@ function Calculator() {
     return savingsOverTime;
   };
 
-  const handleChange = (event: { target: { value: any; name: any } }) => {
+  const handleChange = (event) => {
     const value = parseFloat(event.target.value);
     setCalculatorInputs({
       ...calculatorInputs,
       [event.target.name]: value,
     });
     console.log(calculatorInputs);
-  };
-
-  const mouseRelease = () => {
-    setLineChartValues(getSavingsOverTime());
   };
 
   return (
