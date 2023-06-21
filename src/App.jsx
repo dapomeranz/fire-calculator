@@ -1,7 +1,7 @@
 import MyNavbar from "./components/MyNavbar";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Home from "./pages/Home";
-import Calculator from "./pages/Calculator";
+import Calculator from "./pages/Calculator/Calculator";
 import Todo from "./pages/Todo";
 import About from "./pages/About";
 
